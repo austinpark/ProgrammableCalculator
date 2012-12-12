@@ -52,7 +52,8 @@
 + (BOOL) isVariable:(NSString *)operation {
     if ([self isOperationOneOperand:operation] ||
         [self isOperationTwoOperand:operation] ||
-        [operation isKindOfClass:[NSNumber class]]) {
+        [operation isKindOfClass:[NSNumber class]] ||
+        ![operation isEqualToString:@"π"]) {
         return NO;
     } else {
         return YES;
@@ -114,12 +115,16 @@
                     
                     NSString* leftParan = @"(";
                     NSString* rightParan = @")";
-                    if ([stack count] <= 0) {
-                        leftParan = @"";
-                        rightParan = @"";
-                    }
+
                     result = [NSString stringWithFormat:@"%@%@ %@ %@%@", 
                               leftParan, first, middle, last, rightParan];
+                    if ([stack count] <= 0) {
+                        //remove the outer blackets
+                        if ([result hasPrefix:@"("] && [result hasSuffix:@")"]) {
+                            result = [result substringWithRange: NSMakeRange(1, [result length] - 2)];
+                        
+                        }
+                    }
                 } else if ([self isOperationOneOperand:item]) {
                     result = [NSString stringWithFormat:@"%@ (%@)",
                               item, [self descriptionOfTopOfStack:stack]];
@@ -165,7 +170,11 @@
     if (variablesUsed) {
         variableValues = [[NSMutableDictionary alloc] init];
         for (NSString* variable in variablesUsed) {
-            [variableValues setValue:[NSNumber numberWithDouble:0] forKey:variable];
+            if ([variable isEqualToString:@"π"]) {
+                [variableValues setValue:[NSNumber numberWithDouble:3.141592] forKey:variable];
+            } else {
+                [variableValues setValue:[NSNumber numberWithDouble:0] forKey:variable];
+            }
         }
     }
     
@@ -200,9 +209,10 @@
             result = cos([self popOperandOffProgramStack:stack]);
         } else if ([operation isEqualToString:@"√"]) {
             result = sqrt([self popOperandOffProgramStack:stack]);
-        } else if ([operation isEqualToString:@"π"]) {
-            result = PI;
         } 
+//        else if ([operation isEqualToString:@"π"]) {
+//            result = PI;
+//        } 
     }
     
     return result;

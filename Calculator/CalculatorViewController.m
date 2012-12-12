@@ -11,7 +11,6 @@
 
 @interface CalculatorViewController()
 @property (nonatomic) BOOL userIsInTheMiddleOfEnteringANumber;
-@property (nonatomic) BOOL userPressedPiButton;
 @property (nonatomic) BOOL isMinus;
 @property (nonatomic, strong) CalculatorBrain *brain;
 @end
@@ -22,7 +21,6 @@
 @synthesize variableDisplay = _variableDisplay;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
 @synthesize brain = _brain;
-@synthesize userPressedPiButton = _userPressedPiButton;
 @synthesize isMinus = _isMinus;
 
 #define PI 3.141592
@@ -37,11 +35,7 @@
     
     NSInteger size = [self.display.text length] - 1;
     
-    if (self.userPressedPiButton) {
-        self.display.text = @"0";
-        self.userIsInTheMiddleOfEnteringANumber = NO;
-        self.userPressedPiButton = NO;
-    } else if (size > 0) {
+    if (size > 0) {
         self.display.text = [self.display.text substringToIndex:size];
     } else {
         self.display.text = @"0";
@@ -50,9 +44,9 @@
 }
 
 - (void) displayHistory {
-    NSLog(@"history about to display");
     self.history.text = [CalculatorBrain descriptionOfProgram:[self.brain program]];
 }
+
 - (IBAction)signChangePressed {
     if (self.isMinus) {
         self.isMinus = NO;
@@ -76,7 +70,7 @@
         self.display.text = [self.display.text stringByAppendingString:digit];
     } else {
         if (self.isMinus) {
-            self.display.text = [@"-" stringByAppendingString:digit];
+            self.display.text =	 [@"-" stringByAppendingString:digit];
         } else {
             self.display.text = digit;
         }
@@ -86,33 +80,35 @@
 - (IBAction)variablePressed:(id)sender {
     NSString *variable = [sender currentTitle];
     self.display.text = variable;
-    [self.brain pushOperand:variable];
     self.userIsInTheMiddleOfEnteringANumber = NO;
     self.isMinus = NO;
-    self.userPressedPiButton = NO;
+}
+
+- (BOOL) isNumeric:(NSString *)input {
+    NSCharacterSet *alphaNumbersSet = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet *stringSet = [NSCharacterSet characterSetWithCharactersInString:input];
+    return [alphaNumbersSet isSupersetOfSet:stringSet];
 }
 
 - (IBAction)enterPressed {
-    [self.brain pushOperand:[NSNumber numberWithDouble:[self.display.text doubleValue]]];
+    
+    if ([self isNumeric:self.display.text]) {
+        [self.brain pushOperand:[NSNumber numberWithDouble:[self.display.text doubleValue]]];
+    } else {
+        [self.brain pushOperand:self.display.text];
+    }
+  
     self.userIsInTheMiddleOfEnteringANumber = NO;
     self.isMinus = NO;
     
     [self displayHistory];
-    
-    self.userPressedPiButton = NO;
-    
 }
 
 - (IBAction)operationPressed:(id)sender {
     
     NSString *operation = [sender currentTitle];
     
-    if (self.userIsInTheMiddleOfEnteringANumber) {
-        [self enterPressed];        
-    } else if (self.userPressedPiButton) {
-        [self enterPressed];
-        self.userPressedPiButton = NO;
-    }
+    [self enterPressed];
     
     double result = [self.brain performOperation:operation];
     self.display.text = [NSString stringWithFormat:@"%g", result];
@@ -142,9 +138,6 @@
     }
     
     self.display.text = @"π";
-    [self.brain pushOperand:@"π"];
- 
-    self.userPressedPiButton = YES;
 }
 
 - (void)viewDidUnload {
