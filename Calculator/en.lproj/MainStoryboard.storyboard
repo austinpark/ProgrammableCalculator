@@ -447,6 +447,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="Test1Entered" destination="2" eventType="touchUpInside" id="DJD-A7-9xz"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UQQ-uz-SKL">
                                 <rect key="frame" x="115" y="397" width="90" height="37"/>
@@ -459,6 +462,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="Test2Pressed" destination="2" eventType="touchUpInside" id="gyz-13-uWT"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="AM3-X8-HXZ">
                                 <rect key="frame" x="210" y="397" width="90" height="37"/>
@@ -471,6 +477,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="Test3Pressed" destination="2" eventType="touchUpInside" id="UMa-EL-izC"/>
+                                </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumFontSize="10" id="JeW-6S-afd">
                                 <rect key="frame" x="20" y="443" width="280" height="12"/>

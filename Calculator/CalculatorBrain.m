@@ -118,13 +118,7 @@
 
                     result = [NSString stringWithFormat:@"%@%@ %@ %@%@", 
                               leftParan, first, middle, last, rightParan];
-                    if ([stack count] <= 0) {
-                        //remove the outer blackets
-                        if ([result hasPrefix:@"("] && [result hasSuffix:@")"]) {
-                            result = [result substringWithRange: NSMakeRange(1, [result length] - 2)];
-                        
-                        }
-                    }
+
                 } else if ([self isOperationOneOperand:item]) {
                     result = [NSString stringWithFormat:@"%@ (%@)",
                               item, [self descriptionOfTopOfStack:stack]];

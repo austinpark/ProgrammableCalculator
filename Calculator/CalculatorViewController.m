@@ -131,6 +131,7 @@
     self.history.text=@"";
     self.userIsInTheMiddleOfEnteringANumber = NO;
     self.isMinus = NO;
+    self.variableDisplay.text = @"";
 }
 - (IBAction)piPressed {
     if (self.userIsInTheMiddleOfEnteringANumber) {
@@ -138,6 +139,45 @@
     }
     
     self.display.text = @"π";
+}
+
+- (NSDictionary*) setVariableValues:(double) x usingA:(double) a usingB: (double) b {
+    NSDictionary *variableValues = nil;
+    
+    variableValues = [[NSMutableDictionary alloc] init];
+    NSNumber *xx = [NSNumber numberWithDouble:x];
+    NSNumber *aa = [NSNumber numberWithDouble:a];
+    NSNumber *bb = [NSNumber numberWithDouble:b];
+    NSNumber *pi = [NSNumber numberWithDouble:3.141591];
+    
+    [variableValues setValue:xx forKey:@"x"];
+    [variableValues setValue:aa forKey:@"a"];
+    [variableValues setValue:bb forKey:@"b"];
+    [variableValues setValue:pi forKey:@"π"];
+    
+    return variableValues;
+}
+
+- (IBAction)Test1Entered {
+    
+    double result = [CalculatorBrain runProgram:[self.brain program] usingVariableValues:[self setVariableValues:1 usingA:0 usingB:0]];
+    
+    self.display.text = [NSString stringWithFormat:@"%g", result];
+    self.variableDisplay.text = @"x = 1";
+    
+}
+- (IBAction)Test2Pressed {
+    double result = [CalculatorBrain runProgram:[self.brain program] usingVariableValues:[self setVariableValues:2 usingA:5 usingB:0]];
+    
+    self.display.text = [NSString stringWithFormat:@"%g", result];
+    self.variableDisplay.text = @"x = 2, a = 5";
+
+}
+- (IBAction)Test3Pressed {
+    double result = [CalculatorBrain runProgram:[self.brain program] usingVariableValues:[self setVariableValues:10 usingA:-1 usingB:4]];
+    
+    self.display.text = [NSString stringWithFormat:@"%g", result];
+    self.variableDisplay.text = @"x = 10, a = -1, b = 4";
 }
 
 - (void)viewDidUnload {
